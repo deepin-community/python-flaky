@@ -6,6 +6,13 @@ Release History
 Upcoming
 ++++++++
 
+3.8.0 (2024-03-10)
+++++++++++++++++++
+
+- nose support has been removed.
+- Python 3.12 supported.
+- Bugfixes
+
 3.7.0 (2020-07-07)
 ++++++++++++++++++
 

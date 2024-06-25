@@ -1,3 +1,6 @@
-version=3
-opts=uversionmangle=s/(rc|a|b|c)/~$1/,filenamemangle=s/.+\/v?(\d\S*)\.tar\.gz/flaky-$1\.tar\.gz/ \
-https://github.com/box/flaky/releases .*/archive/v?(.+)\.tar\.gz
+version=4
+opts="uversionmangle=s/(rc|a|b|c)/~$1/,\
+      filenamemangle=s%.*/@ANY_VERSION@%@PACKAGE@-$1.tar.gz%,\
+      searchmode=plain" \
+    https://api.github.com/repos/box/flaky/tags?per_page=100 \
+    https://api.github.com/repos/box/flaky/tarball/refs/tags/@ANY_VERSION@

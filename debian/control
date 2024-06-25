@@ -1,21 +1,19 @@
 Source: python-flaky
 Section: python
 Priority: optional
-Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Uploaders: Tristan Seligmann <mithrandi@debian.org>
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
+Uploaders: Alexandre Detiste <tchet@debian.org>,
 Build-Depends:
  debhelper-compat (= 13),
  dh-sequence-python3,
  python3-all,
- python3-genty,
- python3-mock,
- python3-nose,
- python3-pytest,
+ python3-pytest <!nocheck>,
+ python3-pytest-xdist <!nocheck>,
  python3-setuptools,
-Standards-Version: 4.5.0
+Standards-Version: 4.6.2
 Homepage: https://github.com/box/flaky
-Vcs-Git: https://salsa.debian.org/python-team/modules/python-flaky.git
-Vcs-Browser: https://salsa.debian.org/python-team/modules/python-flaky
+Vcs-Git: https://salsa.debian.org/python-team/packages/python-flaky.git
+Vcs-Browser: https://salsa.debian.org/python-team/packages/python-flaky
 Testsuite: autopkgtest-pkg-python
 Rules-Requires-Root: no
 
@@ -24,11 +22,9 @@ Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}
 Recommends: ${python3:Recommends}
 Suggests: ${python3:Suggests}
-Description: Plugin for nose or py.test that automatically reruns flaky tests (Python 3)
- Flaky is a plugin for nose or py.test that automatically reruns flaky tests.
+Description: Plugin for py.test that automatically reruns flaky tests
+ Flaky is a plugin for py.test that automatically reruns flaky tests.
  .
  Ideally, tests reliably pass or fail, but sometimes test fixtures must rely on
  components that aren't 100% reliable. With flaky, instead of removing those
  tests or marking them to @skip, they can be automatically retried.
- .
- This package contains the Python 3 version of flaky.
