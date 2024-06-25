@@ -1,7 +1,3 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
-
 from unittest import TestCase
 
 from flaky.flaky_decorator import flaky
@@ -42,13 +38,13 @@ class TestFlakyDecorator(TestCase):
         }
 
         self.assertIsNotNone(flaky_attribute)
-        self.assertDictContainsSubset(
+        self.assertLessEqual(
             {
                 FlakyNames.MIN_PASSES: min_passes,
                 FlakyNames.MAX_RUNS: max_runs,
                 FlakyNames.CURRENT_PASSES: 0,
                 FlakyNames.CURRENT_RUNS: 0,
                 FlakyNames.CURRENT_ERRORS: None
-            },
-            flaky_attribute
+            }.items(),
+            flaky_attribute.items()
         )

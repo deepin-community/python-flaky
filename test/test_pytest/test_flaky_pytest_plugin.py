@@ -1,8 +1,5 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
 from io import StringIO
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 # pylint:disable=import-error
 import pytest
 from _pytest.runner import CallInfo
@@ -10,13 +7,12 @@ from _pytest.runner import CallInfo
 from flaky import flaky
 from flaky import _flaky_plugin
 from flaky.flaky_pytest_plugin import (
-    call_runtest_hook,
+    runner,
     FlakyPlugin,
     FlakyXdist,
     PLUGIN,
 )
 from flaky.names import FlakyNames
-from flaky.utils import unicode_type
 
 
 @pytest.fixture
@@ -78,16 +74,16 @@ def mock_error():
     return MockError()
 
 
-class MockError(object):
+class MockError:
     def __init__(self):
-        super(MockError, self).__init__()
+        super().__init__()
         self.type = Mock()
         self.value = Mock()
         self.value.message = 'failed'
         self.traceback = Mock()
 
 
-class MockTestItem(object):
+class MockTestItem:
     name = 'test_method'
     instance = None
     module = None
@@ -105,7 +101,7 @@ class MockTestItem(object):
         pass
 
 
-class MockConfig(object):
+class MockConfig:
     def getvalue(self, key):
         # pylint:disable=unused-argument,no-self-use
         return False
@@ -243,13 +239,13 @@ def test_flaky_plugin_raises_errors_in_fixture_setup(
     flaky_test.ihook = Mock()
     flaky_test.ihook.pytest_runtest_setup = error_raising_setup_function
     flaky_plugin._call_infos[flaky_test] = {}  # pylint:disable=protected-access
-    call_info = call_runtest_hook(flaky_test, 'setup')
+    call_info = runner.CallInfo.from_call(lambda: flaky_test.ihook.pytest_runtest_setup(flaky_test), when='setup')
     assert flaky_test.ran_setup
     assert string_io.getvalue() == mock_io.getvalue()
     assert call_info.excinfo.type is ZeroDivisionError
 
 
-class TestFlakyPytestPlugin(object):
+class TestFlakyPytestPlugin:
     _test_method_name = 'test_method'
 
     def test_flaky_plugin_handles_success(
@@ -413,11 +409,11 @@ class TestFlakyPytestPlugin(object):
             self._test_method_name,
             ' failed and was not selected for rerun.',
             '\n\t',
-            unicode_type(mock_error.type),
+            str(mock_error.type),
             '\n\t',
-            unicode_type(mock_error.value),
+            str(mock_error.value),
             '\n\t',
-            unicode_type(mock_error.traceback),
+            str(mock_error.traceback),
             '\n',
         ])
         assert string_io.getvalue() == mock_io.getvalue()
@@ -543,11 +539,11 @@ class TestFlakyPytestPlugin(object):
                     max_runs - current_runs - 1, max_runs
                 ),
                 '\n\t',
-                unicode_type(mock_error.type),
+                str(mock_error.type),
                 '\n\t',
-                unicode_type(mock_error.value),
+                str(mock_error.value),
                 '\n\t',
-                unicode_type(mock_error.traceback),
+                str(mock_error.traceback),
                 '\n',
             ])
         else:
@@ -559,11 +555,11 @@ class TestFlakyPytestPlugin(object):
                     min_passes
                 ),
                 '\n\t',
-                unicode_type(mock_error.type),
+                str(mock_error.type),
                 '\n\t',
-                unicode_type(mock_error.value),
+                str(mock_error.value),
                 '\n\t',
-                unicode_type(mock_error.traceback),
+                str(mock_error.traceback),
                 '\n',
             ])
         assert stream.getvalue() == mock_stream.getvalue()

@@ -1,0 +1,14 @@
+#! /bin/sh
+
+set -e
+
+cp -a test "$AUTOPKGTEST_TMP"
+cd "$AUTOPKGTEST_TMP"
+
+for py in $(py3versions -s) ; do
+    echo "Testing with $py:"
+    $py -m pytest -v -k "example and not options" --doctest-modules test/test_pytest/
+    $py -m pytest -v -k "example and not options" -n 1 test/test_pytest/
+    $py -m pytest -v -p no:flaky test/test_pytest/test_flaky_pytest_plugin.py
+    $py -m pytest -v --force-flaky --max-runs 2 test/test_pytest/test_pytest_options_example.py
+done
